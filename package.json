@@ -1,0 +1,14 @@
+{
+  "name": "dht22_pi",
+  "version": "1.0.0",
+  "description": "A project to read a DHT22 using a Raspberry Pi 4",
+  "main": "index.js",
+  "scripts": {
+    "read": "sudo node index.js"
+  },
+  "author": "Said Ghamra",
+  "license": "MIT",
+  "dependencies": {
+    "node-dht-sensor": "^0.4.3"
+  }
+}
