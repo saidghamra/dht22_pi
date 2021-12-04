@@ -1,0 +1,6 @@
+global:
+  scrape_interval: 5s
+scrape_configs:
+  - job_name: "dht22_pi"
+    static_configs:
+      - targets: ["dht22_pi:80"]

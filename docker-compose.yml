@@ -1,0 +1,51 @@
+version: "3.9"
+networks:
+  monitoring:
+    driver: bridge
+volumes:
+  prometheus: {}
+  grafana: {}
+services:
+  dht22_pi:
+    build: .
+    restart: unless-stopped
+    container_name: dht22_pi
+    privileged: true
+    ports:
+      - "80:80"
+    devices:
+      - "/dev/gpiomem:/dev/gpiomem"
+    networks:
+      - monitoring
+  prometheus:
+    image: prom/prometheus:v2.31.1
+    container_name: prometheus
+    restart: unless-stopped
+    volumes:
+      - prometheus:/prometheus
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    depends_on:
+      - dht22_pi
+    networks:
+      - monitoring
+  grafana:
+    image: grafana/grafana:8.3.0
+    container_name: grafana
+    restart: unless-stopped
+    volumes:
+      - grafana:/var/lib/grafana
+      - ./grafana/dashboards.yml:/etc/grafana/provisioning/dashboards/dashboards.yml
+      - ./grafana/datasources.yml:/etc/grafana/provisioning/datasources/datasources.yml
+      - ./grafana/default_dashboard.json:/var/lib/grafana/dashboards/default_dashboard.json
+    environment:
+      - GF_AUTH_DISABLE_LOGIN_FORM=true
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
+    networks:
+      - monitoring
