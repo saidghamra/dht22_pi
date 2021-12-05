@@ -21,7 +21,7 @@
     "editable": true,
     "fiscalYearStartMonth": 0,
     "graphTooltip": 0,
-    "id": 2,
+    "id": 1,
     "links": [],
     "liveNow": false,
     "panels": [
@@ -236,7 +236,7 @@
                     "exemplar": true,
                     "expr": "dht22_temperature",
                     "interval": "",
-                    "legendFormat": "",
+                    "legendFormat": "Temperature",
                     "refId": "A"
                 }
             ],
@@ -322,7 +322,7 @@
                     "exemplar": true,
                     "expr": "dht22_humidity",
                     "interval": "",
-                    "legendFormat": "",
+                    "legendFormat": "Humidity",
                     "refId": "A"
                 }
             ],
@@ -345,6 +345,6 @@
     "timezone": "",
     "title": "Temperature and Humidity",
     "uid": "e2IlAVh7k",
-    "version": 2,
+    "version": 3,
     "weekStart": ""
 }

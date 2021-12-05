@@ -1,7 +1,9 @@
-var sensor = require("node-dht-sensor").promises;
-var promClient = require('prom-client');
+const sensor = require("node-dht-sensor").promises;
+const promClient = require('prom-client');
 const express = require('express');
 const app = express();
+
+// ### Configuration ###
 
 const config = {
     app: {
@@ -15,6 +17,8 @@ const config = {
 
     }
 }
+
+// ### Prometheus ###
 
 const clientRegistry = new promClient.Registry();
 clientRegistry.setDefaultLabels({ app: 'dht22_pi' });
@@ -40,16 +44,26 @@ const humidityGauge = new promClient.Gauge({
 clientRegistry.registerMetric(temperatureGauge);
 clientRegistry.registerMetric(humidityGauge);
 
+// ### DHT22 Sensor ###
+
+const cachedReadings = { temperature: 0, humidity: 0 };
+
 async function readSensor() {
     try {
         const {  temperature, humidity } = await sensor.read(config.sensor.type, config.sensor.dataPin);
         console.log(`Temperature: ${temperature}°C`, `\nHumidity: ${humidity}%`, '\n');
-        return { temperature, humidity };
+        // Update the cached readings
+        cachedReadings.temperature = temperature;
+        cachedReadings.humidity = humidity;
+        return cachedReadings;
     } catch (err) {
         console.log(`Error reading sensor data:`, err);
-        return { temperature: 0, humidity: 0 };
+        // If there is an error, return the latest cached temperature and humidity readings
+        return cachedReadings;
     }
 }
+
+// ### Express Metrics API ###
 
 app.get('/metrics', async (req, res) => {
     res.setHeader('Content-Type', clientRegistry.contentType);
