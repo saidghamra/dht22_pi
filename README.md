@@ -4,7 +4,7 @@ A simple express node project that exposes a `/metrics` endpoint with temperatur
 
 Prometheus is configured to scrape the `/metrics` endpoint every 5 seconds. Grafana is also pre-configured with a default dashboard that displays the current temperature and humidity. Additionally, the dashboard also displays the temperature and humidity over the specified time range.
 
-![Default Grafana Dashboard](https://user-images.githubusercontent.com/35788699/144727430-bc03b220-2ab2-4907-9674-192223df10a1.png)
+![Default Grafana Dashboard](https://user-images.githubusercontent.com/35788699/144765466-fa68f8ef-a27e-4d0b-a45f-ebdebf972fd2.png)
 
 # Requirements
 
